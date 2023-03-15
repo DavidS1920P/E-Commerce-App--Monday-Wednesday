@@ -1,46 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using E_Commerce_App__Monday_Wednesday.DAL;
+﻿using E_Commerce_App__Monday_Wednesday.DAL; 
 using E_Commerce_App__Monday_Wednesday.DAL.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace E_Commerce_App__Monday_Wednesday.Controllers
+namespace ECommerce_MW.Controllers
 {
-    public class CountriesController : Controller
+    public class CategoriesController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public CountriesController(DatabaseContext context)
+        public CategoriesController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Countries
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Countries.ToListAsync());
-        }
-
-        // GET: Countries/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null || _context.Countries == null)
-            {
-                return NotFound();
-            }
-
-            var country = await _context.Countries
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
-            {
-                return NotFound();
-            }
-
-            return View(country);
+            return View(await _context.Categories.ToListAsync());
         }
 
         public IActionResult Create()
@@ -50,11 +27,11 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Country country)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(country);
+                _context.Add(category);
                 try
                 {
                     await _context.SaveChangesAsync();
@@ -64,7 +41,7 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "Ya existe una categoría con el mismo nombre.");
                     }
                     else
                     {
@@ -76,33 +53,25 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(country);
+            return View(category);
         }
 
-        // GET: Countries/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Countries == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Categories == null) return NotFound();
 
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
-            {
-                return NotFound();
-            }
-            return View(country);
+            Category category = await _context.Categories.FindAsync(id);
+            if (category == null) return NotFound();
+            return View(category);
         }
 
-        // POST: Countries/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Categories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Country country)
+        public async Task<IActionResult> Edit(Guid id, Category category)
         {
-            if (id != country.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -111,7 +80,7 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
             {
                 try
                 {
-                    _context.Update(country);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -119,7 +88,7 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "Ya existe una categoría con el mismo nombre.");
                     }
                     else
                     {
@@ -131,39 +100,56 @@ namespace E_Commerce_App__Monday_Wednesday.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(country);
+            return View(category);
         }
 
-        // GET: Countries/Delete/5
+        // GET: Categories/Details/5
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null || _context.Categories == null)
+            {
+                return NotFound();
+            }
+
+            Category category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Categories == null)
             {
                 return NotFound();
             }
 
-            Country country = await _context.Countries.FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            Category category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(category);
         }
 
-        // POST: Countries/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Countries == null)
+            if (_context.Categories == null)
             {
-                return Problem("Entity set 'DatabaseContext.Countries'  is null.");
+                return Problem("Entity set 'DatabaseContext.Categories'  is null.");
             }
-            var country = await _context.Countries.FindAsync(id);
-            if (country != null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null)
             {
-                _context.Countries.Remove(country);
+                _context.Categories.Remove(category);
             }
 
             await _context.SaveChangesAsync();

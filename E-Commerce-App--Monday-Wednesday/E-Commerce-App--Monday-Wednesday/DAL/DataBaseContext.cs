@@ -4,19 +4,22 @@ using Microsoft.Extensions.Options;
 
 namespace E_Commerce_App__Monday_Wednesday.DAL
 {
-    public class DataBaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public DataBaseContext(DbContextOptions<DataBaseContext>options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext>options) : base(options)
         {
 
 
         }
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<Country> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); 
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         }
 
     }
