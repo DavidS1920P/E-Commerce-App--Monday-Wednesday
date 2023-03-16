@@ -2,7 +2,7 @@
 
 namespace E_Commerce_App__Monday_Wednesday.DAL.Entities
 {
-    public class Country : Entity
+    public class State : Entity
     {
 
         [Display (Name = "Paìs")]
@@ -10,6 +10,7 @@ namespace E_Commerce_App__Monday_Wednesday.DAL.Entities
         [Required(ErrorMessage ="El campo {0} es obligatorio.")]
         public string Name { get; set; }
 
-        public ICollection<State> State { get; set; }    
+        public Country country { get; set; }
     }
+        
 }
