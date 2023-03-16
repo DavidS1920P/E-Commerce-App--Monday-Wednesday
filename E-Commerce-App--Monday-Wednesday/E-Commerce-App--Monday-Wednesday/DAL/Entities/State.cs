@@ -11,6 +11,10 @@ namespace E_Commerce_App__Monday_Wednesday.DAL.Entities
         public string Name { get; set; }
 
         public Country country { get; set; }
+        
+        public ICollection<City> Cities { get; set;}
+
+        public int CitiesNumber => Cities == null ? 0 : Cities.Count;
     }
         
 }

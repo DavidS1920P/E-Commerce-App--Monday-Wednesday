@@ -10,6 +10,8 @@ namespace E_Commerce_App__Monday_Wednesday.DAL.Entities
         [Required(ErrorMessage ="El campo {0} es obligatorio.")]
         public string Name { get; set; }
 
-        public ICollection<State> State { get; set; }    
+        public ICollection<State> States { get; set; }    
+
+       public int StateNumber => States == null ? 0 :  States.Count;
     }
 }
